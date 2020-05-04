@@ -1,0 +1,37 @@
+---
+- name: Update SW and Create a user
+  hosts: all
+  vars:
+    administrator_name: corpadmin
+    administrator_password: $6$mysecretsalt$qJbapG68nyRab3gxvKWPUcs2g3t0oMHSHMnSKecYNpSi3CuZm.GbBqXO8BE6EI6P1JUefhA0qvD7b5LSh./PU1
+  become: yes
+  tasks:
+    - name: Update software packages
+      yum: name=* state=latest
+    - name: Create user
+      user: name={{administrator_name}} password={{administrator_password}}
+- name: Webserver setup
+  hosts: web1
+  become: yes
+  tasks:
+    - name: Install NgInx
+      yum: name=nginx state=latest
+    - name: Copy default.conf.j2 to the system directory
+      template:
+        src: ./default.conf.j2
+        dest: /etc/nginx/conf.d/default.conf
+    - name: Start NgInx on boot
+      service: name=nginx state=started enabled=yes
+- name: DB setup
+  hosts: database1
+  become: yes
+  tasks:
+    - name: Install mysql server package
+      yum: name=mysql-server state=latest 
+    - name: Start mysql server on boot
+      service: name=mysqld state=started enabled=yes
+    - name: create directories
+      file: dest=/var/data/client{{item}} state=directory
+      with_sequence: start=1 end=5
+
+
