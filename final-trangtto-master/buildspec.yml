@@ -1,0 +1,6 @@
+version: 0.2
+
+artifacts:
+  files:
+    - '**/*'
+  name: docker-pet-$(date +%y%m%d%H%M).zip

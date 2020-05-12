@@ -1,0 +1,5 @@
+1. create a variable named "author" and its value is your full name.
+2. Use "yum" module to finish the TASK <install nginx>  
+3. In TASK <update web page>, use "template" module to copy index.html.j2 to /usr/share/nginx/html/index.html
+4. In index.html.j2, replace <This instance's FQDN> with an appropriate variable from ansible facts.
+5. Also in index.html.j2, replace <YOUR NAME> with the variable "author"
